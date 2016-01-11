@@ -10,12 +10,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Created by Dmitriy on 11.01.2016.
  */
 public class Main {
+
     public static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"springContext.xml"});
-        IGame game = context.getBean("game", IGame.class);
-        log.info("smth");
-        log.info(game.toString());
+        IGame game = context.getBean("gameWithComputer", IGame.class);
+
+
     }
 }

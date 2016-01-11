@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
-    <bean id="firstPlayer" class="model.otherClasses.HumanPlayer">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+       default-lazy-init="false">
 
-    </bean>
+    <bean id="firstPlayer" class="model.otherClasses.HumanPlayer"/>
 
-    <bean id="secondPlayer" class="model.otherClasses.ComputerPlayer">
+    <bean id="secondComputerPlayer" class="model.otherClasses.ComputerPlayer"/>
 
-    </bean>
+    <bean id="secondHumanPlayer" class="model.otherClasses.HumanPlayer"/>
 
-    <bean id="firstField" class="model.otherClasses.Field">
+    <bean id="firstField" class="model.otherClasses.Field"/>
 
-    </bean>
+    <bean id="secondField" class="model.otherClasses.Field"/>
 
-    <bean id="secondField" class="model.otherClasses.Field">
-
-    </bean>
-
-    <bean id="game" class="model.otherClasses.GameWithComputer">
+    <bean id="gameWithComputer" class="model.otherClasses.GameWithComputer" >
         <constructor-arg name="firstPlayer" ref="firstPlayer"/>
-        <constructor-arg name="secondPlayer" ref="secondPlayer"/>
+        <constructor-arg name="secondPlayer" ref="secondComputerPlayer"/>
         <constructor-arg name="firstField" ref="firstField"/>
         <constructor-arg name="secondField" ref="secondField"/>
 
