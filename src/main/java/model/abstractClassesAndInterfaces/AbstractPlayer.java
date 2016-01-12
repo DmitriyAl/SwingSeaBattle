@@ -43,5 +43,12 @@ public abstract class AbstractPlayer implements IPlayer {
         this.field = field;
     }
 
-
+    @Override
+    public String toString() {
+        return "AbstractPlayer{" +
+                "shipPlacing=" + shipPlacing +
+                ", guessMaking=" + guessMaking +
+                ", field=" + field +
+                '}';
+    }
 }

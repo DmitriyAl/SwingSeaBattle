@@ -2,6 +2,7 @@ package model.abstractClassesAndInterfaces;
 
 import model.otherClasses.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,11 +20,13 @@ public abstract class AbstractGame implements IGame {
     public AbstractGame() {
     }
 
-    public AbstractGame(IPlayer firstPlayer, IPlayer secondPlayer, Field firstField, Field secondField) {
+    public AbstractGame(IPlayer firstPlayer, IPlayer secondPlayer, Field firstField, Field secondField, List<FirstPlayerFieldObserver> firstPlayerFieldObservers, List<SecondPlayerFieldObserver> secondPlayerFieldObservers) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.firstField = firstField;
         this.secondField = secondField;
+        this.firstPlayerFieldObservers = firstPlayerFieldObservers;
+        this.secondPlayerFieldObservers = secondPlayerFieldObservers;
     }
 
     public IPlayer getFirstPlayer() {
@@ -56,6 +59,22 @@ public abstract class AbstractGame implements IGame {
 
     public void setSecondField(Field secondField) {
         this.secondField = secondField;
+    }
+
+    public List<FirstPlayerFieldObserver> getFirstPlayerFieldObservers() {
+        return firstPlayerFieldObservers;
+    }
+
+    public void setFirstPlayerFieldObservers(List<FirstPlayerFieldObserver> firstPlayerFieldObservers) {
+        this.firstPlayerFieldObservers = firstPlayerFieldObservers;
+    }
+
+    public List<SecondPlayerFieldObserver> getSecondPlayerFieldObservers() {
+        return secondPlayerFieldObservers;
+    }
+
+    public void setSecondPlayerFieldObservers(List<SecondPlayerFieldObserver> secondPlayerFieldObservers) {
+        this.secondPlayerFieldObservers = secondPlayerFieldObservers;
     }
 
     @Override

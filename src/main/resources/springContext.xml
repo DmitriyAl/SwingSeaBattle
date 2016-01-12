@@ -2,23 +2,42 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
-       default-lazy-init="false">
+       default-lazy-init="true">
 
-    <bean id="firstPlayer" class="model.otherClasses.HumanPlayer"/>
+    <bean id="firstPlayer" class="model.otherClasses.HumanPlayer">
+        <property name="field" ref="firstPlayerField"/>
+        <property name="guessMaking" ref="manualGuessMaking"/>
+    </bean>
 
-    <bean id="secondComputerPlayer" class="model.otherClasses.ComputerPlayer"/>
+    <bean id="secondComputerPlayer" class="model.otherClasses.ComputerPlayer">
+        <constructor-arg name="shipPlacing" ref="autoShipPlacing"/>
+        <constructor-arg name="guessMaking" ref="easyComputerGuessMaking"/>
+        <constructor-arg name="field" ref="secondPlayerField"/>
+    </bean>
 
     <bean id="secondHumanPlayer" class="model.otherClasses.HumanPlayer"/>
 
-    <bean id="firstField" class="model.otherClasses.Field"/>
+    <bean id="firstPlayerField" class="model.otherClasses.Field"/>
 
-    <bean id="secondField" class="model.otherClasses.Field"/>
+    <bean id="secondPlayerField" class="model.otherClasses.Field"/>
 
-    <bean id="gameWithComputer" class="model.otherClasses.GameWithComputer" >
+    <bean id="easyComputerGuessMaking" class="model.otherClasses.EasyComputerGuessMaking"/>
+
+    <bean id="manualGuessMaking" class="model.otherClasses.ManualGuessMaking"/>
+
+    <bean id="autoShipPlacing" class="model.otherClasses.AutomaticShipPlacing"/>
+
+    <bean id="manualShipPlacing" class="model.otherClasses.ManualShipPlacing"/>
+
+    <bean id="fieldObservers" class="java.util.ArrayList"/>
+    <bean id="fieldObservers2" class="java.util.ArrayList"/>
+
+    <bean id="gameWithComputer" class="model.otherClasses.GameWithComputer">
         <constructor-arg name="firstPlayer" ref="firstPlayer"/>
         <constructor-arg name="secondPlayer" ref="secondComputerPlayer"/>
-        <constructor-arg name="firstField" ref="firstField"/>
-        <constructor-arg name="secondField" ref="secondField"/>
-
+        <constructor-arg name="firstField" ref="firstPlayerField"/>
+        <constructor-arg name="secondField" ref="secondPlayerField"/>
+        <constructor-arg name="firstPlayerFieldObservers" ref="fieldObservers"/>
+        <constructor-arg name="secondPlayerFieldObservers" ref="fieldObservers2"/>
     </bean>
 </beans>
