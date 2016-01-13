@@ -18,11 +18,11 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"springContext.xml"});
         IGame game = context.getBean("gameWithComputer", IGame.class);
-        IPlayer firstPlayer = context.getBean("firstPlayer", IPlayer.class);
-        log.info("\n\n\n");
-        Boolean isEq =((AbstractGame)game).getFirstPlayer()==firstPlayer;
-        log.info(isEq.toString());
+//        IPlayer firstPlayer = context.getBean("firstPlayer", IPlayer.class);
+//        log.info("\n\n\n");
+//        Boolean isEq =((AbstractGame)game).getFirstPlayer()==firstPlayer;
+//        log.info(isEq.toString());
 
-
+        game.start(10);
     }
 }

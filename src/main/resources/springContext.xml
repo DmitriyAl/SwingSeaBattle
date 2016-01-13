@@ -17,9 +17,15 @@
 
     <bean id="secondHumanPlayer" class="model.otherClasses.HumanPlayer"/>
 
-    <bean id="firstPlayerField" class="model.otherClasses.Field"/>
+    <bean id="firstPlayerField" class="model.otherClasses.Field">
+        <constructor-arg name="factory" ref="factory"/>
+    </bean>
 
-    <bean id="secondPlayerField" class="model.otherClasses.Field"/>
+    <bean id="secondPlayerField" class="model.otherClasses.Field">
+        <constructor-arg name="factory" ref="factory"/>
+    </bean>
+
+    <bean id="factory" class="model.otherClasses.ShipFactory"/>
 
     <bean id="easyComputerGuessMaking" class="model.otherClasses.EasyComputerGuessMaking"/>
 
@@ -29,8 +35,7 @@
 
     <bean id="manualShipPlacing" class="model.otherClasses.ManualShipPlacing"/>
 
-    <bean id="fieldObservers" class="java.util.ArrayList"/>
-    <bean id="fieldObservers2" class="java.util.ArrayList"/>
+    <bean id="fieldObservers" class="java.util.ArrayList" scope="prototype"/>
 
     <bean id="gameWithComputer" class="model.otherClasses.GameWithComputer">
         <constructor-arg name="firstPlayer" ref="firstPlayer"/>
@@ -38,6 +43,6 @@
         <constructor-arg name="firstField" ref="firstPlayerField"/>
         <constructor-arg name="secondField" ref="secondPlayerField"/>
         <constructor-arg name="firstPlayerFieldObservers" ref="fieldObservers"/>
-        <constructor-arg name="secondPlayerFieldObservers" ref="fieldObservers2"/>
+        <constructor-arg name="secondPlayerFieldObservers" ref="fieldObservers"/>
     </bean>
 </beans>

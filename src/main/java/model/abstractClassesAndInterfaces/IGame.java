@@ -4,7 +4,8 @@ package model.abstractClassesAndInterfaces;
  * Created by Dmitriy on 10.01.2016.
  */
 public interface IGame {
-    void start();
+
+    void start(int fieldSize);
 
     void save();
 
@@ -12,7 +13,9 @@ public interface IGame {
 
     void restart();
 
-    void notifyListeners();
+    void notifyFirstPlayerFieldListeners();
+
+    void notifySecondPlayerFieldListeners();
 
     void addListener();
 

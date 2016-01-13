@@ -13,6 +13,7 @@ public class GameManager {
     }
 
     public void startGame() {
-        game.start();
+        int fieldSize = 10;
+        game.start(10);
     }
 }

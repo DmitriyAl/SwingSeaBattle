@@ -19,9 +19,38 @@ public class GameWithComputer extends AbstractGame {
         super(firstPlayer, secondPlayer, firstField, secondField, firstPlayerFieldObservers, secondPlayerFieldObservers);
     }
 
-    public void start() {
-        ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"springContext.xml"});
-        IGame gameWithComputer = context.getBean("gameWithComputer", IGame.class);
+    public void start(int fieldSize) {
+        firstField.setFieldSize(fieldSize);
+        secondField.setFieldSize(fieldSize);
+        firstField.init();
+        secondField.init();
+        ((AbstractPlayer) firstPlayer).setShipPlacing(new AutomaticShipPlacing());
+        firstPlayer.placeShips();
+        secondPlayer.placeShips();
+        notifyFirstPlayerFieldListeners();
+        notifySecondPlayerFieldListeners();
+        while (!isTheEnd) {
+            boolean isSuccessfulShot;
+            do {
+                isSuccessfulShot = firstPlayer.makeShot();
+                notifySecondPlayerFieldListeners();
+                isTheEnd = firstField.isUndestroyedFieldExist();
+                if (isTheEnd) {
+                    break;
+                }
+            } while (isSuccessfulShot);
+            if (isTheEnd) {
+                break;
+            }
+            do {
+                isSuccessfulShot = secondPlayer.makeShot();
+                notifyFirstPlayerFieldListeners();
+                isTheEnd = secondField.isUndestroyedFieldExist();
+                if (isTheEnd) {
+                    break;
+                }
+            } while (isSuccessfulShot);
+        }
     }
 
     public void save() {
@@ -33,10 +62,6 @@ public class GameWithComputer extends AbstractGame {
     }
 
     public void restart() {
-
-    }
-
-    public void notifyListeners() {
 
     }
 

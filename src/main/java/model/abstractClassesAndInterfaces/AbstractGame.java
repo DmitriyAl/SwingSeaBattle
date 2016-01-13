@@ -77,6 +77,18 @@ public abstract class AbstractGame implements IGame {
         this.secondPlayerFieldObservers = secondPlayerFieldObservers;
     }
 
+    public void notifyFirstPlayerFieldListeners(){
+        for (FirstPlayerFieldObserver firstPlayerFieldObserver : firstPlayerFieldObservers) {
+            firstPlayerFieldObserver.update();
+        }
+    }
+
+    public void notifySecondPlayerFieldListeners(){
+        for (SecondPlayerFieldObserver secondPlayerFieldObserver : secondPlayerFieldObservers) {
+            secondPlayerFieldObserver.update();
+        }
+    }
+
     @Override
     public String toString() {
         return "AbstractGame{" +
