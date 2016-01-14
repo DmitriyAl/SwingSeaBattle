@@ -27,8 +27,14 @@ public class ShipFactory {
             int availableAmountOtThisTypeShip;
             do {
                 availableAmountOtThisTypeShip = longestShip - currentLength - placedShipsOfThisType++ + 1;
-
-                name = currentLength.toString()+"-deck ship";
+                switch (currentLength) {
+                    case 1:
+                        name = currentLength.toString() + "-deck ship";
+                        break;
+                    default:
+                        name = currentLength.toString() + "-decks ship";
+                        break;
+                }
                 length = currentLength;
                 coordinates = new ArrayList<Point>();
                 coordinatesForProgram = new Point[currentLength];

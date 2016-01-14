@@ -17,6 +17,8 @@ public interface IGame {
 
     void notifySecondPlayerFieldListeners();
 
+    void notifyStatisticListeners();
+
     void addListener();
 
     void showStatistic();

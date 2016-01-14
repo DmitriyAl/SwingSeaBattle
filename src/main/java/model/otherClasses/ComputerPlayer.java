@@ -17,6 +17,7 @@ public class ComputerPlayer extends AbstractPlayer {
     }
 
     public boolean makeShot() {
-        return false;
+        boolean isDamaged = guessMaking.makeShot(field);
+        return isDamaged;
     }
 }

@@ -15,6 +15,7 @@ public abstract class AbstractGame implements IGame {
     protected Field secondField;
     protected List<FirstPlayerFieldObserver> firstPlayerFieldObservers;
     protected List<SecondPlayerFieldObserver> secondPlayerFieldObservers;
+    protected List<StatisticObserver> statisticObservers;
     protected boolean isTheEnd;
 
     public AbstractGame() {
@@ -86,6 +87,12 @@ public abstract class AbstractGame implements IGame {
     public void notifySecondPlayerFieldListeners(){
         for (SecondPlayerFieldObserver secondPlayerFieldObserver : secondPlayerFieldObservers) {
             secondPlayerFieldObserver.update();
+        }
+    }
+
+    public void notifyStatisticListeners(){
+        for (StatisticObserver statisticObserver : statisticObservers) {
+            statisticObserver.update();
         }
     }
 

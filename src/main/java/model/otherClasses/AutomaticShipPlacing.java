@@ -36,7 +36,7 @@ public class AutomaticShipPlacing implements ShipPlacing {
             } while (!field.isShipPlaced(decks));
             log.info(ship.getName() + " placed with coordinates: " + decks);
             ship.setCoordinates(decks);
-            field.updateFields(decks);
+            field.placeShips(decks);
         }
         field.showFields(field.getFieldWithShips());
     }

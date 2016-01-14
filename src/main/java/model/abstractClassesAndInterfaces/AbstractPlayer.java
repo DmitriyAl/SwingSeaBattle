@@ -9,6 +9,7 @@ public abstract class AbstractPlayer implements IPlayer {
     protected ShipPlacing shipPlacing;
     protected GuessMaking guessMaking;
     protected Field field;
+    protected volatile boolean isMyShot;
 
     public AbstractPlayer() {
     }
@@ -41,6 +42,14 @@ public abstract class AbstractPlayer implements IPlayer {
 
     public void setField(Field field) {
         this.field = field;
+    }
+
+    public boolean isMyshot() {
+        return isMyShot;
+    }
+
+    public void setIsMyshot(boolean isMyshot) {
+        this.isMyShot = isMyshot;
     }
 
     @Override
