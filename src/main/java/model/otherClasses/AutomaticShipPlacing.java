@@ -34,6 +34,9 @@ public class AutomaticShipPlacing implements ShipPlacing {
                     decks.add(point);
                 }
             } while (!field.isShipPlaced(decks));
+            for (int i = 0; i < ship.getLength(); i++) {
+                ship.getCoordinatesForProgram()[i] = decks.get(i);
+            }
             log.info(ship.getName() + " placed with coordinates: " + decks);
             ship.setCoordinates(decks);
             field.placeShips(decks);

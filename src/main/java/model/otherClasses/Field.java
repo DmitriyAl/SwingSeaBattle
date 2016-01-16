@@ -1,6 +1,6 @@
 package model.otherClasses;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,7 +15,19 @@ public class Field {
     private Point[][] designerField;
     private Point[][] fieldForDestroyedShips;
 
+    public Field() {
+    }
+
+    public Field(int fieldSize) {
+        this.fieldSize = fieldSize;
+    }
+
     public Field(ShipFactory factory) {
+        this.factory = factory;
+    }
+
+    public Field(int fieldSize, ShipFactory factory) {
+        this.fieldSize = fieldSize;
         this.factory = factory;
     }
 
@@ -27,8 +39,16 @@ public class Field {
         return fieldSize;
     }
 
+    public void setFactory(ShipFactory factory) {
+        this.factory = factory;
+    }
+
     public List<Ship> getShips() {
         return ships;
+    }
+
+    public void setShips(List<Ship> ships) {
+        this.ships = ships;
     }
 
     public Point[][] getGameField() {
@@ -160,66 +180,113 @@ public class Field {
     }
 
     public void showFields(Point[][] field) {
-            for (int i = 0; i < fieldSize; i++) {
-                for (int j = 0; j < fieldSize; j++) {
-                    PointType state = field[i][j].getType();
-                    switch (state) {
-                        case FIELD:
-                            System.out.print(". ");
-                            break;
-                        case UNHITTED_DECK:
-                            System.out.print("# ");
-                            break;
-                        case HITTED_DECK:
-                            System.out.print("@ ");
-                            break;
-                        case MISS:
-                            System.out.print("& ");
-                            break;
-                    }
+        for (int i = 0; i < fieldSize; i++) {
+            for (int j = 0; j < fieldSize; j++) {
+                PointType state = field[i][j].getType();
+                switch (state) {
+                    case FIELD:
+                        System.out.print(". ");
+                        break;
+                    case UNHITTED_DECK:
+                        System.out.print("# ");
+                        break;
+                    case HITTED_DECK:
+                        System.out.print("@ ");
+                        break;
+                    case MISS:
+                        System.out.print("& ");
+                        break;
                 }
-                System.out.println();
+            }
+            System.out.println();
 
         }
     }
 
+    //    public boolean checkShot(Point shot) {
+//        boolean isDamaged = false;
+//        if (fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.UNHITTED_DECK) {
+//            for (Ship ship : ships) {
+//                for (Point deck : ship.getCoordinates()) {
+//                    if (shot.equals(deck)) {
+//                        isDamaged = true;
+//                        sendAsGameField(gameField, shot, PointType.HITTED_DECK);
+//                        sendAsGameField(this.fieldWithShips, shot, PointType.HITTED_DECK);
+//                        ship.getCoordinates().remove(deck);
+////                        game.notifyStatisticListeners("Hit");
+//                        break;
+//                    }
+//                }
+//                if (ship.getCoordinates().isEmpty()) {
+//                    for (Point deck : ship.getCoordinatesForProgram()) {
+//                        sendAsDesignerField(fieldForDestroyedShips, deck, PointType.MISS);
+//                    }
+//                    for (int i = 0; i < fieldSize; i++) {
+//                        for (int j = 0; j < fieldSize; j++) {
+//                            if (fieldForDestroyedShips[j][i].getType() == PointType.MISS && fieldWithShips[j][i].getType() != PointType.UNHITTED_DECK && fieldWithShips[j][i].getType() != PointType.HITTED_DECK) {
+//                                gameField[j][i].setType(fieldForDestroyedShips[j][i].getType());
+//                                this.fieldWithShips[j][i].setType(fieldForDestroyedShips[j][i].getType());
+//                            }
+//                        }
+//                    }
+//                    ships.remove(ship);
+////                    game.notifyStatisticListeners("Destroyed");
+////                    }
+//                    break;
+//                }
+//            }
+//        } else {
+//            sendAsGameField(gameField, shot, PointType.MISS);
+//            sendAsGameField(this.fieldWithShips, shot, PointType.MISS);
+////            game.notifyStatisticListeners("Miss");
+//        }
+//        return isDamaged;
+//    }
     public boolean checkShot(Point shot) {
         boolean isDamaged = false;
         if (fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.UNHITTED_DECK) {
-            for (Ship ship : ships) {
-                for (Point point : ship.getCoordinates()) {
-                    if (shot.equals(point)) {
+            for (Iterator<Ship> shipIterator = ships.iterator(); shipIterator.hasNext();) {
+                Ship currentShip = shipIterator.next();
+                for (Iterator<Point> deckIterator = currentShip.getCoordinates().iterator(); deckIterator.hasNext(); ) {
+                    if (shot.equals(deckIterator.next())) {
+                        System.out.println("damaged");
                         isDamaged = true;
                         sendAsGameField(gameField, shot, PointType.HITTED_DECK);
                         sendAsGameField(this.fieldWithShips, shot, PointType.HITTED_DECK);
-                        ship.getCoordinates().remove(point);
-//                        game.notifyStatisticListeners("Hit");
-                        break;
-                    }
-                }
-                if (ship.getCoordinates().isEmpty()) {
-                    for (Point point : ship.getCoordinatesForProgram()) {
-                        sendAsDesignerField(fieldForDestroyedShips, point, PointType.MISS);
-                    }
-                    for (int i = 0; i < fieldSize; i++) {
-                        for (int j = 0; j < fieldSize; j++) {
-                            if (fieldForDestroyedShips[j][i].getType() == PointType.MISS & fieldWithShips[j][i].getType() != PointType.UNHITTED_DECK & fieldWithShips[j][i].getType() != PointType.HITTED_DECK) {
-                                gameField[j][i].setType(fieldForDestroyedShips[j][i].getType());
-                                this.fieldWithShips[j][i].setType(fieldForDestroyedShips[j][i].getType());
+                        deckIterator.remove();
+                        if (currentShip.getCoordinates().isEmpty()) {
+                            System.out.println("and destroyed " + currentShip.getName());
+                            for (Point point : currentShip.getCoordinatesForProgram()) {
+                                sendAsDesignerField(fieldForDestroyedShips, point, PointType.MISS);
                             }
+                            for (int i = 0; i < fieldSize; i++) {
+                                for (int j = 0; j < fieldSize; j++) {
+                                    if (fieldForDestroyedShips[j][i].getType() == PointType.MISS && fieldWithShips[j][i].getType() != PointType.UNHITTED_DECK && fieldWithShips[j][i].getType() != PointType.HITTED_DECK) {
+                                        gameField[j][i].setType(fieldForDestroyedShips[j][i].getType());
+                                        this.fieldWithShips[j][i].setType(fieldForDestroyedShips[j][i].getType());
+                                    }
+                                }
+                            }
+                            shipIterator.remove();
+                            break;
                         }
+//                        break;
                     }
-                    ships.remove(ship);
-//                    game.notifyStatisticListeners("Destroyed");
-//                    }
-                    break;
                 }
             }
+        } else if (fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.HITTED_DECK) {
+            return false;
         } else {
             sendAsGameField(gameField, shot, PointType.MISS);
             sendAsGameField(this.fieldWithShips, shot, PointType.MISS);
-//            game.notifyStatisticListeners("Miss");
         }
         return isDamaged;
+    }
+
+    public boolean isAvailableForShot(Point shot) {
+        if (fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.FIELD || fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.UNHITTED_DECK) {
+            return true;
+        }
+        return false;
     }
 }

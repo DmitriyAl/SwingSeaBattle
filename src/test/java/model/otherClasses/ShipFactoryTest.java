@@ -27,7 +27,7 @@ public class ShipFactoryTest {
     public void firstShipAttributeFor10x10Field() {
         List<Ship> fleet = factory.createFleet(10);
         Ship firstShip = fleet.get(0);
-        Assert.assertEquals("4-deck ship", firstShip.getName());
+        Assert.assertEquals("4-decks ship", firstShip.getName());
         Assert.assertEquals(4, firstShip.getLength());
         Assert.assertEquals("java.util.ArrayList", firstShip.getCoordinates().getClass().getCanonicalName());
         Assert.assertNotNull(firstShip.getCoordinatesForProgram());

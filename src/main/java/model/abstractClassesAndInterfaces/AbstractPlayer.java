@@ -5,7 +5,7 @@ import model.otherClasses.Field;
 /**
  * Created by Dmitriy on 10.01.2016.
  */
-public abstract class AbstractPlayer implements IPlayer {
+public abstract class AbstractPlayer implements IPlayer{
     protected ShipPlacing shipPlacing;
     protected GuessMaking guessMaking;
     protected Field field;
@@ -19,6 +19,8 @@ public abstract class AbstractPlayer implements IPlayer {
         this.guessMaking = guessMaking;
         this.field = field;
     }
+
+    public abstract boolean makeShot(Field field);
 
     public ShipPlacing getShipPlacing() {
         return shipPlacing;

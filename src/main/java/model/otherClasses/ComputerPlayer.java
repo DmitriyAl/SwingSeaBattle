@@ -13,11 +13,10 @@ public class ComputerPlayer extends AbstractPlayer {
     }
 
     public void placeShips() {
-
+        shipPlacing.placeShips(field);
     }
 
-    public boolean makeShot() {
-        boolean isDamaged = guessMaking.makeShot(field);
-        return isDamaged;
+    public boolean makeShot(Field field) {
+        return guessMaking.makeShot(field);
     }
 }

@@ -1,14 +1,15 @@
 package model.otherClasses;
 
+import model.abstractClassesAndInterfaces.AbstractGame;
 import model.abstractClassesAndInterfaces.IGame;
 
 /**
  * Created by Dmitriy on 1/11/2016.
  */
 public class GameManager {
-    private IGame game;
+    private AbstractGame game;
 
-    public GameManager(IGame game) {
+    public GameManager(AbstractGame game) {
         this.game = game;
     }
 

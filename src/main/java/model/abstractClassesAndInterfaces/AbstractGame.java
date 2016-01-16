@@ -1,6 +1,8 @@
 package model.abstractClassesAndInterfaces;
 
 import model.otherClasses.Field;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,20 +10,21 @@ import java.util.List;
 /**
  * Created by Dmitriy on 10.01.2016.
  */
-public abstract class AbstractGame implements IGame {
-    protected IPlayer firstPlayer;
-    protected IPlayer secondPlayer;
+public abstract class AbstractGame implements IGame, Runnable {
+    protected AbstractPlayer firstPlayer;
+    protected AbstractPlayer secondPlayer;
     protected Field firstField;
     protected Field secondField;
     protected List<FirstPlayerFieldObserver> firstPlayerFieldObservers;
     protected List<SecondPlayerFieldObserver> secondPlayerFieldObservers;
     protected List<StatisticObserver> statisticObservers;
     protected boolean isTheEnd;
+    public static final Logger log = LoggerFactory.getLogger(AbstractGame.class);
 
     public AbstractGame() {
     }
 
-    public AbstractGame(IPlayer firstPlayer, IPlayer secondPlayer, Field firstField, Field secondField, List<FirstPlayerFieldObserver> firstPlayerFieldObservers, List<SecondPlayerFieldObserver> secondPlayerFieldObservers) {
+    public AbstractGame(AbstractPlayer firstPlayer, AbstractPlayer secondPlayer, Field firstField, Field secondField, List<FirstPlayerFieldObserver> firstPlayerFieldObservers, List<SecondPlayerFieldObserver> secondPlayerFieldObservers) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.firstField = firstField;
@@ -30,11 +33,18 @@ public abstract class AbstractGame implements IGame {
         this.secondPlayerFieldObservers = secondPlayerFieldObservers;
     }
 
+    @Override
+    public void run() {
+        startShooting();
+    }
+
+    protected abstract void startShooting();
+
     public IPlayer getFirstPlayer() {
         return firstPlayer;
     }
 
-    public void setFirstPlayer(IPlayer firstPlayer) {
+    public void setFirstPlayer(AbstractPlayer firstPlayer) {
         this.firstPlayer = firstPlayer;
     }
 
@@ -42,7 +52,7 @@ public abstract class AbstractGame implements IGame {
         return secondPlayer;
     }
 
-    public void setSecondPlayer(IPlayer secondPlayer) {
+    public void setSecondPlayer(AbstractPlayer secondPlayer) {
         this.secondPlayer = secondPlayer;
     }
 

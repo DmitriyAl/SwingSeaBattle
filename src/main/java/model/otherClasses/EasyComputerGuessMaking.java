@@ -12,12 +12,12 @@ public class EasyComputerGuessMaking implements GuessMaking {
         Random random = new Random();
         Point shot;
         do {
-            shot = new Point(random.nextInt(field.getFieldSize()), random.nextInt(field.getFieldSize()), PointType.FIELD);
-        } while (!field.checkShot(shot));
+            shot = new Point(random.nextInt(field.getFieldSize()), random.nextInt(field.getFieldSize()));
+        } while (!field.isAvailableForShot(shot));
 //        boolean isHit = this.game.getPlayerField().checkShot(shot);
 //        game.notifyLocalPlayerFieldObservers();
 //        game.getPlayer().setShotAbility(!isHit);
-        return false;
+        return field.checkShot(shot);
     }
 }
 

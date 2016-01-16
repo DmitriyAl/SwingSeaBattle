@@ -19,7 +19,7 @@ public class HumanPlayer extends AbstractPlayer {
         shipPlacing.placeShips(field);
     }
 
-    public boolean makeShot() {
-        return false;
+    public boolean makeShot(Field field) {
+        return new EasyComputerGuessMaking().makeShot(field);
     }
 }
