@@ -1,11 +1,14 @@
 package model.otherClasses;
 
+import controller.IStartMenuViewController;
+import controller.StartMenuViewController;
 import model.abstractClassesAndInterfaces.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import view.StartMenuView;
 
 import java.util.List;
 
@@ -22,8 +25,8 @@ public class SpringInitializationTest {
 
     @Test
     public void PlayerReferenceInGameAndPersonBeanEquivalence() {
-        IGame gameWithComputer = context.getBean("gameWithComputer", IGame.class);
-        IPlayer firstPlayer = context.getBean("firstPlayer", IPlayer.class);
+        IGame gameWithComputer = context.getBean("gameWithComputerAutomaticShipPlacing", IGame.class);
+        IPlayer firstPlayer = context.getBean("firstPlayerAutomaticShipPlacing", IPlayer.class);
         IPlayer secondComputerPlayer = context.getBean("secondComputerPlayer", IPlayer.class);
         Assert.assertEquals(true, ((AbstractGame) gameWithComputer).getFirstPlayer() == firstPlayer);
         Assert.assertEquals(true, ((AbstractGame) gameWithComputer).getSecondPlayer() == secondComputerPlayer);
@@ -31,7 +34,7 @@ public class SpringInitializationTest {
 
     @Test
     public void PlayerFieldReferenceInGameAndFieldReferenceEquivalence() {
-        IGame gameWithComputer = context.getBean("gameWithComputer", IGame.class);
+        IGame gameWithComputer = context.getBean("gameWithComputerAutomaticShipPlacing", IGame.class);
         Field firstPlayerField = context.getBean("firstPlayerField", Field.class);
         Field secondPlayerField = context.getBean("secondPlayerField", Field.class);
         Assert.assertEquals(true, ((AbstractGame) gameWithComputer).getFirstField() == firstPlayerField);
@@ -40,7 +43,7 @@ public class SpringInitializationTest {
 
     @Test
     public void PlayerFieldReferenceAndFieldBeanEquivalence() {
-        IPlayer firstPlayer = context.getBean("firstPlayer", IPlayer.class);
+        IPlayer firstPlayer = context.getBean("firstPlayerAutomaticShipPlacing", IPlayer.class);
         IPlayer secondComputerPlayer = context.getBean("secondComputerPlayer", IPlayer.class);
         Field firstPlayerField = context.getBean("firstPlayerField", Field.class);
         Field secondComputerPlayerField = context.getBean("secondPlayerField", Field.class);
@@ -50,9 +53,21 @@ public class SpringInitializationTest {
 
     @Test
     public void FieldObserversNotEquivalence() {
-        IGame gameWithComputer = context.getBean("gameWithComputer", IGame.class);
+        IGame gameWithComputer = context.getBean("gameWithComputerAutomaticShipPlacing", IGame.class);
         List<FirstPlayerFieldObserver> firstPlayerFieldObservers = ((AbstractGame) gameWithComputer).getFirstPlayerFieldObservers();
         List<SecondPlayerFieldObserver> secondPlayerFieldObservers = ((AbstractGame) gameWithComputer).getSecondPlayerFieldObservers();
 //        Assert.assertEquals(false, firstPlayerFieldObservers.equals(secondPlayerFieldObservers)); //todo find info about object comparison
+    }
+
+    @Test
+    public void StartMenuViewAndControllerInitialization() {
+        IStartMenuViewController controller = context.getBean("startMenuController", IStartMenuViewController.class);
+        StartMenuView view = context.getBean("startMenuView", StartMenuView.class);
+        GameManager model = context.getBean("gameManager", GameManager.class);
+        controller.setView(view);
+        Assert.assertEquals(model, controller.getModel());
+        Assert.assertEquals(view, controller.getView());
+        Assert.assertEquals(controller, view.getController());
+        Assert.assertEquals(model, view.getModel());
     }
 }

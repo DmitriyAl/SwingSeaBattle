@@ -274,7 +274,7 @@ public class Field {
                     }
                 }
             }
-        } else if (fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.HITTED_DECK) {
+        } else if (fieldWithShips[shot.getY()][shot.getX()].getType() != PointType.FIELD) {
             return false;
         } else {
             sendAsGameField(gameField, shot, PointType.MISS);
@@ -285,6 +285,13 @@ public class Field {
 
     public boolean isAvailableForShot(Point shot) {
         if (fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.FIELD || fieldWithShips[shot.getY()][shot.getX()].getType() == PointType.UNHITTED_DECK) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAllShipDestroyed() {
+        if (ships.size() == 0) {
             return true;
         }
         return false;

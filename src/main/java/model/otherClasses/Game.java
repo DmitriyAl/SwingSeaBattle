@@ -11,13 +11,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Dmitriy on 10.01.2016.
  */
-public class GameWithComputer extends AbstractGame {
+public class Game extends AbstractGame {
 
-    public GameWithComputer() {
+    public Game() {
         super();
     }
 
-    public GameWithComputer(AbstractPlayer firstPlayer, AbstractPlayer secondPlayer, Field firstField, Field secondField, List<FirstPlayerFieldObserver> firstPlayerFieldObservers, List<SecondPlayerFieldObserver> secondPlayerFieldObservers) {
+    public Game(AbstractPlayer firstPlayer, AbstractPlayer secondPlayer, Field firstField, Field secondField, List<FirstPlayerFieldObserver> firstPlayerFieldObservers, List<SecondPlayerFieldObserver> secondPlayerFieldObservers) {
         super(firstPlayer, secondPlayer, firstField, secondField, firstPlayerFieldObservers, secondPlayerFieldObservers);
     }
 
@@ -36,7 +36,6 @@ public class GameWithComputer extends AbstractGame {
         boolean isFirstPlayerMakeFirstShot = new Random().nextBoolean();
         firstPlayer.setIsMyshot(isFirstPlayerMakeFirstShot);
         secondPlayer.setIsMyshot(!isFirstPlayerMakeFirstShot);
-        firstPlayer.setShipPlacing(new AutomaticShipPlacing());
         firstPlayer.placeShips();
         secondPlayer.placeShips();
         notifyFirstPlayerFieldListeners();
@@ -44,18 +43,25 @@ public class GameWithComputer extends AbstractGame {
     }
 
     private void restartOrExit() {
+        firstField.showFields(firstField.getGameField());
+        System.out.println("\n\n\n");
+        secondField.showFields(firstField.getGameField());
         log.info("exit");
         System.exit(0);
     }
 
+//    private void gameProcess() {
+//        Thread shooting = new Thread(this);
+//        shooting.start();
+//        try {
+//            shooting.join();
+//        } catch (InterruptedException e) {
+//            log.error("main thread was interrupted");
+//        }
+//    }
+
     private void gameProcess() {
-        Thread shooting = new Thread(this);
-        shooting.start();
-        try {
-            shooting.join();
-        } catch (InterruptedException e) {
-            log.error("main thread was interrupted");
-        }
+        startShooting();
     }
 
     @Override
@@ -64,38 +70,37 @@ public class GameWithComputer extends AbstractGame {
             boolean isSuccessfulShot;
             if (firstPlayer.isMyshot()) {
                 do {
+                    System.out.println("first player make shot");
                     isSuccessfulShot = firstPlayer.makeShot(secondField);
+                    System.out.println("second player's field");
+                    secondField.showFields(secondField.getGameField());
+                    System.out.println("\n");
+                    secondField.showFields(secondField.getFieldWithShips());
                     notifySecondPlayerFieldListeners();
-                    log.info("First player shooting");
-                    pause(500);
                 } while (isSuccessfulShot);
                 firstPlayer.setIsMyshot(false);
                 secondPlayer.setIsMyshot(true);
-                secondField.showFields(secondField.getGameField());
             }
-            if (isTheEnd) {
-                break;
-            }
+            isTheEnd = isTheEnd();
             if (secondPlayer.isMyshot()) {
                 do {
+                    System.out.println("second player make shot");
                     isSuccessfulShot = secondPlayer.makeShot(firstField);
+                    System.out.println("first player's field");
+                    firstField.showFields(secondField.getGameField());
+                    System.out.println("\n");
+                    firstField.showFields(secondField.getFieldWithShips());
                     notifyFirstPlayerFieldListeners();
-                    log.info("Second player shooting");
-                    pause(500);
                 } while (isSuccessfulShot);
                 firstPlayer.setIsMyshot(true);
                 secondPlayer.setIsMyshot(false);
-                firstField.showFields(firstField.getGameField());
             }
+            isTheEnd = isTheEnd();
         }
     }
 
-    private void pause(int ms) {
-        try {
-            TimeUnit.MILLISECONDS.sleep(ms);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private boolean isTheEnd() {
+        return (firstField.isAllShipDestroyed() || secondField.isAllShipDestroyed());
     }
 
     public void save() {

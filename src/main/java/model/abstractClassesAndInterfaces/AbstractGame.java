@@ -90,19 +90,19 @@ public abstract class AbstractGame implements IGame, Runnable {
 
     public void notifyFirstPlayerFieldListeners(){
         for (FirstPlayerFieldObserver firstPlayerFieldObserver : firstPlayerFieldObservers) {
-            firstPlayerFieldObserver.update();
+            firstPlayerFieldObserver.updateFirstPlayerField();
         }
     }
 
     public void notifySecondPlayerFieldListeners(){
         for (SecondPlayerFieldObserver secondPlayerFieldObserver : secondPlayerFieldObservers) {
-            secondPlayerFieldObserver.update();
+            secondPlayerFieldObserver.updateSecondPlayerField();
         }
     }
 
     public void notifyStatisticListeners(){
         for (StatisticObserver statisticObserver : statisticObservers) {
-            statisticObserver.update();
+            statisticObserver.updateStatistic();
         }
     }
 

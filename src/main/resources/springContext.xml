@@ -4,9 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
        default-lazy-init="true">
 
-    <bean id="firstPlayer" class="model.otherClasses.HumanPlayer">
+    <bean id="firstPlayerAutomaticShipPlacing" class="model.otherClasses.HumanPlayer">
         <property name="field" ref="firstPlayerField"/>
         <property name="guessMaking" ref="manualGuessMaking"/>
+        <property name="shipPlacing" ref="autoShipPlacing"/>
     </bean>
 
     <bean id="secondComputerPlayer" class="model.otherClasses.ComputerPlayer">
@@ -37,12 +38,34 @@
 
     <bean id="fieldObservers" class="java.util.ArrayList" scope="prototype"/>
 
-    <bean id="gameWithComputer" class="model.otherClasses.GameWithComputer">
-        <constructor-arg name="firstPlayer" ref="firstPlayer"/>
+    <bean id="gameManager" class="model.otherClasses.GameManager"/>
+
+    <bean id="gameWithComputerAutomaticShipPlacing" class="model.otherClasses.Game">
+        <constructor-arg name="firstPlayer" ref="firstPlayerAutomaticShipPlacing"/>
         <constructor-arg name="secondPlayer" ref="secondComputerPlayer"/>
         <constructor-arg name="firstField" ref="firstPlayerField"/>
         <constructor-arg name="secondField" ref="secondPlayerField"/>
         <constructor-arg name="firstPlayerFieldObservers" ref="fieldObservers"/>
         <constructor-arg name="secondPlayerFieldObservers" ref="fieldObservers"/>
+    </bean>
+
+    <bean id="startMenuController" class="controller.StartMenuViewController">
+        <constructor-arg name="model" ref="gameManager"/>
+        <!--<property name="view" ref="startMenuView"/>-->
+    </bean>
+
+    <bean id="startMenuView" class="view.StartMenuView">
+        <constructor-arg name="model" ref="gameManager"/>
+        <constructor-arg name="controller" ref="startMenuController"/>
+    </bean>
+
+    <bean id="gameView" class="view.GameView">
+        <constructor-arg name="model" ref="gameManager"/>
+        <property name="controller" ref="gameController"/>
+    </bean>
+
+    <bean id="gameController" class="controller.GameController">
+        <constructor-arg name="model" ref="gameManager"/>
+        <constructor-arg name="view" ref="gameView"/>
     </bean>
 </beans>
